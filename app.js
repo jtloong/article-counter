@@ -15,7 +15,7 @@ const rl = readline.createInterface({
   output: process.stdout
 });
 
-rl.question('What is the article url: ', (url) => {
+rl.question('What is the article url | topic: ', (answer) => {
   // TODO: Log the answer in a database
   async.series([
     function setAuth(step) {
@@ -34,9 +34,13 @@ rl.question('What is the article url: ', (url) => {
     },
     function workingWithRows(step) {
       // google provides some query options
+      var split_answer = answer.split(" | "), url = split_answer[0], topic = split_answer[1];
       var get_stats = read(url, function(err, article, meta) {
         var text = striptags(article.content);
         var count = text.length;
+        var d = new Date();
+
+        date = String(d.getDate()) + '-' + String(d.getMonth()) + '-' + String(d.getYear());
 
         //The average page has 3838 characters with spaces according to https://anycount.com/WordCountBlog/how-many-words-in-one-page/
         pages = Math.ceil(count / 3838);
@@ -44,7 +48,9 @@ rl.question('What is the article url: ', (url) => {
         data = {
           Pages:pages,
           Title:article.title,
-          URL: url
+          URL: url,
+          Date: date,
+          Topic: topic
         };
         sheet.addRow(data, function(err, _row) {
           step();
