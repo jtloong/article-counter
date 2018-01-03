@@ -40,8 +40,7 @@ rl.question('What is the article url | topic: ', (answer) => {
         var count = text.length;
         var d = new Date();
 
-        date = String(d.getDate()) + '-' + String(d.getMonth()) + '-' + String(d.getYear());
-
+        date = String(d.getMonth() + 1) + '-' + String(d.getDate())   + '- 20' + String(d.getYear()).slice(1,3);
         //The average page has 3838 characters with spaces according to https://anycount.com/WordCountBlog/how-many-words-in-one-page/
         pages = Math.ceil(count / 3838);
 
